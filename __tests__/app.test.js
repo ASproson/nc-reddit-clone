@@ -33,12 +33,13 @@ describe('app', () => {
                 })
             })
         });
-        it('status:200, responds with specified article_id: author from users table, title, article_id, body, topic, created_at, votes, and comment_count (which is the count of all the comments with specified article_id', () => { // ❌
+        });
+    describe('GET /api/articles/:article_id', () => {
+        it('status:200, responds with specified article_id: author from users table, title, article_id, body, topic, created_at, votes, and comment_count (which is the count of all the comments with specified article_id', () => { // ✅
             return request(app)
             .get('/api/articles/1')
             .expect(200)
             .then(({ body }) => {
-                console.log(body);
                 expect(body.article).toEqual(
                     expect.objectContaining({
                         article_id:     expect.any(Number),
@@ -54,4 +55,25 @@ describe('app', () => {
             })
         })
     });
+    describe('PATCH /api/articles/:article_id', () => {
+        it('updates the votes on an article, and responds with said article', () => { //❌
+            return request(app)
+            .get('/api/articles/1')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.articles.votes).toBe(DETERMINE NUMBER HERE);
+                expect.objectContaining({
+                    article_id:     expect.any(Number),
+                    author:         expect.any(String),
+                    title:          expect.any(String),
+                    body:           expect.any(String),
+                    topic:          expect.any(String),
+                    created_at:     expect.any(String),
+                    votes:          expect.any(Number),
+                    comment_count:  expect.any(String)
+                })
+            })
+        })
+    });
+    
 });
