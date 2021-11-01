@@ -17,7 +17,7 @@ describe('app', () => {
         })
     });
     describe('GET /api/topics', () => {
-        it('status:200, responds with an array of topics', () => { //❌
+        it('status:200, responds with an array of topics', () => { //✅
             return request(app)
             .get('/api/topics')
             .expect(200)
