@@ -15,5 +15,24 @@ describe('app', () => {
         .then(({ body }) => {
             expect(body.msg).toBe('path not found');
         })
-    })
+    });
+    describe('GET /api/topics', () => {
+        it('status:200, responds with an array of topics', () => { //❌
+            return request(app)
+            .get('/api/topics')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.topics.length).toBe(3);
+                body.topics.forEach((topic) => {
+                    expect(topic).toEqual(
+                        expect.objectContaining({
+                            description: expect.any(String),
+                            slug:        expect.any(String),
+                        })
+                    )
+                })
+            })
+        });
+        
+    });
 });
