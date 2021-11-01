@@ -8,7 +8,7 @@ beforeEach(() => seed(testData));
 afterAll(() => db.end());
 
 describe('app', () => {
-    it('status:404 and responds with error message when passed an unknown path', () => { //❌
+    it('status:404 and responds with error message when passed an unknown path', () => { //✅
         return request(app)
         .get('/api/not-a-path')
         .expect(404)
