@@ -73,7 +73,7 @@ describe('app', () => {
         })
     });
     describe('PATCH /api/articles/:article_id', () => {
-        it('updates the votes with addition on an article, and responds with said article', () => { //✅
+        it('status:200, updates the votes with addition on an article, and responds with said article', () => { //✅
             return request(app)
             .patch('/api/articles/1')
             .send( { 'inc_votes': 100 })
@@ -92,7 +92,7 @@ describe('app', () => {
                 })
             })
         })
-        it('updates the votes with subctraction on an article, and responds with said article', () => { //✅
+        it('status:200, updates the votes with subtraction on an article, and responds with said article', () => { //✅
             return request(app)
             .patch('/api/articles/1')
             .send( { 'inc_votes': -100 })
@@ -109,6 +109,24 @@ describe('app', () => {
                     votes:          expect.any(Number),
                     comment_count:  expect.any(String)
                 })
+            })
+        })
+        it('status:404, when passed an invalid article_id not in database', () => { //✅
+            return request(app)
+            .patch('/api/articles/1000000000000')
+            .send( { 'inc_votes': -100 })
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('article not found');
+            })
+        })
+        it('status:404, when passed an invalid vote data type', () => { //✅
+            return request(app)
+            .patch('/api/articles/1')
+            .send( { 'inc_votes': 'Not a number' })
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('invalid data type');
             })
         })
     });
