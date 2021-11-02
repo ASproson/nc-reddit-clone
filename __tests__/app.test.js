@@ -120,7 +120,7 @@ describe('app', () => {
                 expect(body.msg).toBe('article not found');
             })
         })
-        it('status:404, when passed an invalid vote data type', () => { //✅
+        it('status:400, when passed an invalid vote data type', () => { //✅
             return request(app)
             .patch('/api/articles/1')
             .send( { 'inc_votes': 'Not a number' })
