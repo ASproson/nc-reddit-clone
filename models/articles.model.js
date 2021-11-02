@@ -32,7 +32,7 @@ exports.updateArticleVotesById = (id, inc_votes) => {
     } 
 
     if(typeof inc_votes !== 'number'){
-        return Promise.reject({ status: 404, msg: 'invalid data type' })
+        return Promise.reject({ status: 400, msg: 'invalid data type' })
     }
 
     let updateQuery = `UPDATE articles SET votes = votes +$1 WHERE article_id = $2 RETURNING *`

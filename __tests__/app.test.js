@@ -42,7 +42,7 @@ describe('app', () => {
             .then(({ body }) => {
                 expect(body.article).toEqual(
                     expect.objectContaining({
-                        article_id:     expect.any(Number),
+                        article_id:     1,
                         author:         expect.any(String),
                         title:          expect.any(String),
                         body:           expect.any(String),
@@ -124,7 +124,7 @@ describe('app', () => {
             return request(app)
             .patch('/api/articles/1')
             .send( { 'inc_votes': 'Not a number' })
-            .expect(404)
+            .expect(400)
             .then(({ body }) => {
                 expect(body.msg).toBe('invalid data type');
             })
