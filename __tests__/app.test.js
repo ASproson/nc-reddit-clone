@@ -72,25 +72,26 @@ describe('app', () => {
             })
         })
     });
-    // describe('PATCH /api/articles/:article_id', () => {
-    //     it('updates the votes on an article, and responds with said article', () => { //❌
-    //         return request(app)
-    //         .get('/api/articles/1')
-    //         .expect(200)
-    //         .then(({ body }) => {
-    //             expect(body.articles.votes).toBe(DETERMINE NUMBER HERE);
-    //             expect.objectContaining({
-    //                 article_id:     expect.any(Number),
-    //                 author:         expect.any(String),
-    //                 title:          expect.any(String),
-    //                 body:           expect.any(String),
-    //                 topic:          expect.any(String),
-    //                 created_at:     expect.any(String),
-    //                 votes:          expect.any(Number),
-    //                 comment_count:  expect.any(String)
-    //             })
-    //         })
-    //     })
-    // });
+    describe('PATCH /api/articles/:article_id', () => {
+        it('updates the votes on an article, and responds with said article', () => { //❌
+            return request(app)
+            .patch('/api/articles/1')
+            .send( { 'inc_votes': 100 })
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.article.votes).toBe(200);
+                expect.objectContaining({
+                    article_id:     expect.any(Number),
+                    author:         expect.any(String),
+                    title:          expect.any(String),
+                    body:           expect.any(String),
+                    topic:          expect.any(String),
+                    created_at:     expect.any(String),
+                    votes:          expect.any(Number),
+                    comment_count:  expect.any(String)
+                })
+            })
+        })
+    });
     
 });

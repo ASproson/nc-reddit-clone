@@ -24,17 +24,9 @@ exports.selectArticles = (id) => {
 }
 
 exports.updateArticleVotesById = (id, inc_votes) => {
-    let updateQuery = `UPDATE articles SET votes = votes`;
-    let queryValues = [];
-    if(inc_votes > 0){
-        updateQuery += ` +$1 WHERE article_id = $2 RETURNING *`;
-        queryValues.push(id, inc_votes)
-    } else {
-        updateQuery += ` -$1 WHERE article_id = $2 RETURNING *`;
-        queryValues.push(id, inc_votes)
-    }
-    console.log(updateQuery);
-    console.log(queryValues);
+    let updateQuery = `UPDATE articles SET votes = votes +$1 WHERE article_id = $2 RETURNING *`
+    let queryValues = [inc_votes, id];
+
     return db.query(updateQuery, queryValues)
-    .then(({ article }) => article[0])
+    .then(({ rows }) => rows[0])
 }
