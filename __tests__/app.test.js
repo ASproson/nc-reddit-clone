@@ -54,14 +54,23 @@ describe('app', () => {
                 )
             })
         })
-        it('status:400, when passed an article_id not within the database', () => { //❌
+        // Could add additional test to verify comment_count, JSON.parse() to convert str to int
+        it('status:400, when passed an invalid article_id data type not within the database', () => { //✅
             return request(app)
             .get('/api/articles/NaN')
             .expect(400)
             .then(({ body }) => {
                 expect(body.msg).toBe('invalid data type');
             })
-        })
+        });
+        // it('status:404, when passed an invalid article_id not in database', () => { //❌
+        //     return request(app)
+        //     .get('/api/articles/1000000000000')
+        //     .expect(404)
+        //     .then(({ body }) => {
+        //         expect(body.msg).toBe('article not found');
+        //     })
+        // })
     });
     // describe('PATCH /api/articles/:article_id', () => {
     //     it('updates the votes on an article, and responds with said article', () => { //❌
