@@ -59,7 +59,7 @@ describe('app', () => {
             .get('/api/articles/NaN')
             .expect(400)
             .then(({ body }) => {
-                expect(body.msg).toBe('invalid data type requested');
+                expect(body.msg).toBe('invalid data type');
             })
         })
     });
