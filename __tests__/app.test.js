@@ -73,13 +73,32 @@ describe('app', () => {
         })
     });
     describe('PATCH /api/articles/:article_id', () => {
-        it('updates the votes on an article, and responds with said article', () => { //❌
+        it('updates the votes with addition on an article, and responds with said article', () => { //✅
             return request(app)
             .patch('/api/articles/1')
             .send( { 'inc_votes': 100 })
             .expect(200)
             .then(({ body }) => {
                 expect(body.article.votes).toBe(200);
+                expect.objectContaining({
+                    article_id:     expect.any(Number),
+                    author:         expect.any(String),
+                    title:          expect.any(String),
+                    body:           expect.any(String),
+                    topic:          expect.any(String),
+                    created_at:     expect.any(String),
+                    votes:          expect.any(Number),
+                    comment_count:  expect.any(String)
+                })
+            })
+        })
+        it('updates the votes with subctraction on an article, and responds with said article', () => { //✅
+            return request(app)
+            .patch('/api/articles/1')
+            .send( { 'inc_votes': -100 })
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.article.votes).toBe(0);
                 expect.objectContaining({
                     article_id:     expect.any(Number),
                     author:         expect.any(String),
