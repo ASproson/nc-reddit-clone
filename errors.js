@@ -1,9 +1,21 @@
-exports.handlePSQLErrors = (err, req, res, next) => {
-    const errorCodes = {"22P02" : { status:400, msg:"invalid data type" }};
-    if(!errorCodes[err.code]){
-        next(err)
+exports.handleCustoms = (err, req, res, next) => {
+    if(err.status) {
+    res.status(err.status).send({msg: err.msg})
     } else {
-        const { status, msg } = errorCodes[err.code]
+        next(err)
+    }
+}
+
+exports.handlePSQLErrors = (err, req, res, next) => {
+    if(err.code === '22P02'){
+        res.status(400).send({msg: 'invalid data type' });
+    } else {
+        const { status, msg} = errorCodes[err.code]
         res.status(status).send({ msg });
     }
+}
+
+exports.handle500s = (err, req, res, next) => {
+    console.log(err);
+    res.status(500).send({msg: 'server error'});
 }
