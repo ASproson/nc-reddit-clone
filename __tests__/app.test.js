@@ -131,7 +131,7 @@ describe('app', () => {
         })
     });
     describe('GET api/articles?sort_by', () => {
-        it('status:200, sorts articles by created_at by default, newest articles first', () => {
+        it('status:200, sorts articles by created_at by default, newest articles first', () => { //✅
             return request(app)
             .get('/api/articles')
             .expect(200)
@@ -150,12 +150,52 @@ describe('app', () => {
                 })
             })
         })
-        it('status:200, sorts articles by valid column passed by user and returns articles', () => {
+        it('status:200, sorts articles by valid votes column passed by user and returns articles', () => { //✅
             return request(app)
             .get('/api/articles?sort_by=votes')
             .expect(200)
             .then(({ body }) => {
                 expect(body.articles).toBeSorted('votes', { descending: true });
+            })
+        })
+        it('status:200, sorts articles by valid author column passed by user and returns articles', () => { //✅
+            return request(app)
+            .get('/api/articles?sort_by=author')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.articles).toBeSorted('author', { descending: true });
+            })
+        })
+        it('status:200, sorts articles by valid title column passed by user and returns articles', () => { //✅
+            return request(app)
+            .get('/api/articles?sort_by=title')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.articles).toBeSorted('title', { descending: true });
+            })
+        })
+        it('status:200, sorts articles by valid topic column passed by user and returns articles', () => { //✅
+            return request(app)
+            .get('/api/articles?sort_by=topic')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.articles).toBeSorted('topic', { descending: true });
+            })
+        })
+        it('status:200, sorts articles by valid comment_count column passed by user and returns articles', () => { //✅
+            return request(app)
+            .get('/api/articles?sort_by=comment_count')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.articles).toBeSorted('comment_count', { descending: true });
+            })
+        })
+        it('status:400, when passed an invalid column to sort by', () => { // ❌
+            return request(app)
+            .get('/api/articles?sort_by=not_a_column')
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('invalid request');
             })
         })
 
