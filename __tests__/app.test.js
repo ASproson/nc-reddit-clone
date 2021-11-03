@@ -217,7 +217,7 @@ describe('app', () => {
             })
         })
         describe('GET api/articles/topic_filter', () => {
-            it('status:200, accepts valid topic value and filters by said topic', () => {
+            it('status:200, accepts valid topic value and filters by said topic', () => { //✅
                 return request(app)
                 .get('/api/articles?topic=cats')
                 .expect(200)
@@ -240,7 +240,7 @@ describe('app', () => {
 
                 })
             })
-            it('status:400, when passed invalid topic', () => {
+            it('status:404, when passed invalid topic', () => { //✅
                 return request(app)
                 .get('/api/articles?topic=invalidTopic')
                 .expect(404)
@@ -248,9 +248,16 @@ describe('app', () => {
                     expect(body.msg).toBe('topic not found');
                 })
             })
+            it('status:200, when passed a valid topic but said topic has no articles', () => { //✅
+                return request(app)
+                .get('/api/articles?topic=paper')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body).toEqual({ "articles": [] });
+                })
+            })
         })
     })
 });
 
-//topic doesnt exist, but topic aexists but no articles
-//query paper get 0
+// Topic exists, but there is no article, how manage that? Ant covered in Advanced Error Handling

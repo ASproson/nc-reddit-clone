@@ -43,7 +43,7 @@ exports.updateArticleVotesById = (id, inc_votes) => {
     .then(({ rows }) => rows[0])
 }
 
-exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC', topic) => {
+exports.selectSortedArticles = async (sort_by = 'created_at', order = 'DESC', topic) => {
 
     let articlesQuery = `
     SELECT 
@@ -61,6 +61,10 @@ exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC', topic) =
     if(topic){
         articlesQuery += ` WHERE articles.topic = $1`
         queryValues.push(topic)
+        const dbCheck = await db.query(`SELECT * FROM topics WHERE slug = $1;`, queryValues)
+            if(dbCheck.rows.length === 0){
+                return Promise.reject({ status: 404, msg: 'topic not found' });
+            }
     }
 
 
@@ -74,5 +78,17 @@ exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC', topic) =
 
     
     return db.query(articlesQuery, queryValues)
-    .then(( { rows }) => rows.length === 0 ? Promise.reject({ status: 404, msg: 'topic not found' }) : rows);
+    .then(( { rows }) => rows);
+    // .then(( { rows }) => {
+    //     const checkTopicExists = async (queryValues) => {
+    //         const dbCheck = await db.query(`SELECT * FROM articles WHERE topic = $1;`, [queryValues])
+    //         if(dbCheck.rows.length === 0){
+    //             console.log('CHECK TOPICS')
+    //             Promise.reject({ status: 404, msg: 'topic not found' });
+    //         }
+    //     };
+        //if topic query invoke: checkTopicExists()
+
+        return rows
+    // })
 }
