@@ -57,8 +57,12 @@ exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC') => {
 
     const validColumns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count'];
 
+    console.log('ORDER:', order)
+    if(order === 'ASC'){
+        articlesQuery += ` ORDER BY created_at ASC`
+    }
 
-    if(!sort_by && !order){
+    if(!sort_by || !order){
         articlesQuery += ` ORDER BY articles.created_at DESC`
     }
     if(!validColumns.includes(sort_by)){
@@ -76,15 +80,14 @@ exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC') => {
     if(sort_by === 'topic'){
         articlesQuery += ` ORDER BY topic DESC`
     }
-    if(sort_by === 'created_at'){
-        articlesQuery += ` ORDER BY created_at DESC`
-    }
     if(sort_by === 'votes'){
         articlesQuery += ` ORDER BY votes DESC`
     }
     if(sort_by === 'comment_count'){
         articlesQuery += ` ORDER BY comment_count DESC`
     }
+
+    console.log(articlesQuery)
 
     return db.query(articlesQuery, queryValues)
     .then(({ rows }) => rows);

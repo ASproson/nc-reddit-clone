@@ -190,12 +190,22 @@ describe('app', () => {
                 expect(body.articles).toBeSorted('comment_count', { descending: true });
             })
         })
-        it('status:400, when passed an invalid column to sort by', () => { // ❌
+        it('status:400, when passed an invalid column to sort by', () => { // ✅1
             return request(app)
             .get('/api/articles?sort_by=not_a_column')
             .expect(400)
             .then(({ body }) => {
                 expect(body.msg).toBe('invalid request');
+            })
+        })
+        describe.only('GET api/articles/order', () => {
+            it('status:200, accepts valid order by query', () => { //✅
+                return request(app)
+                .get('/api/articles?order=ASC')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.articles).toBeSorted('created_at', { descending: false});
+                })
             })
         })
 
