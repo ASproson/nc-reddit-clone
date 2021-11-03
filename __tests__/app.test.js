@@ -219,23 +219,38 @@ describe('app', () => {
         describe('GET api/articles/topic_filter', () => {
             it('status:200, accepts valid topic value and filters by said value', () => {
                 return request(app)
-                .get('/api/articles?filter=cats')
+                .get('/api/articles?topic=cats')
                 .expect(200)
                 .then(({ body }) => {
-                    expect(body.articles.length).toBeGreaterThanOrEqual(1);
-                    expect.objectContaining({
-                        article_id:     expect.any(Number),
-                        author:         expect.any(String),
-                        title:          expect.any(String),
-                        body:           expect.any(String),
-                        topic:          'cat',
-                        created_at:     expect.any(String),
-                        votes:          expect.any(Number),
-                        comment_count:  expect.any(String)
+                    // expect(body.articles.length).toEqual(1);
+                    body.articles.forEach((article) => {
+                        expect(article).toEqual(
+                            expect.objectContaining({
+                                article_id:     expect.any(Number),
+                                author:         expect.any(String),
+                                title:          expect.any(String),
+                                body:           expect.any(String),
+                                topic:          'cats',
+                                created_at:     expect.any(String),
+                                votes:          expect.any(Number),
+                                comment_count:  expect.any(String)
+                            })
+                        )
                     })
+
+                })
+            })
+            it('status:400, when passed invalid topic', () => {
+                return request(app)
+                .get('/api/articles?filter=invalidTopic')
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('topic not found');
                 })
             })
         })
     })
 });
 
+//topic doesnt exist, but topic aexists but no articles
+//query paper get 0

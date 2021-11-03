@@ -1,4 +1,5 @@
 const db = require('../db/connection.js');
+const articles = require('../db/data/test-data/articles.js');
 
 exports.selectArticle = (id) => {
 
@@ -44,6 +45,8 @@ exports.updateArticleVotesById = (id, inc_votes) => {
 
 exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC', filter) => {
 
+    console.log('FILTER', filter)
+
     let articlesQuery = `
     SELECT 
         articles.*, 
@@ -52,48 +55,29 @@ exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC', filter) 
     LEFT OUTER JOIN comments AS c 
     ON articles.article_id = c.article_id`
 
-    const queryValues = [];
+    let queryValues = [];
 
     const validColumns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count'];
     const validOrders = ['ASC', 'DESC'];
-    const validTopics = ['cat', 'mitch', 'paper'];
 
-    if(filter === 'cats'){
-        articlesQuery += ` WHERE articles.topic LIKE 'cats'`
+    // if (filter){add as paramteized filed} else {
+    //     return Promise.reject({ status: 400, msg: 'invalid request' })
+    // }
+    if(filter){
+        articlesQuery += ` WHERE articles.topic = $1`
+        queryValues.push(filter)
     }
 
-    articlesQuery += ` GROUP BY articles.article_id`
+
+    articlesQuery += ` GROUP BY articles.article_id`;
 
     if(!validColumns.includes(sort_by) || !validOrders.includes(order)){
         return Promise.reject({ status: 400, msg: 'invalid request' })
     }
 
-    if(order === 'ASC'){
-        articlesQuery += ` ORDER BY created_at ASC`
-    }
-    if(!sort_by || !order){
-        articlesQuery += ` ORDER BY articles.created_at DESC`
-    }
-    if(sort_by === 'author'){
-        articlesQuery += ` ORDER BY author DESC`
-    }
-    if(sort_by === 'title'){
-        articlesQuery += ` ORDER BY title DESC`
-    }
-    if(sort_by === 'article_id'){
-        articlesQuery += ` ORDER BY article_id DESC`
-    }
-    if(sort_by === 'topic'){
-        articlesQuery += ` ORDER BY topic DESC`
-    }
-    if(sort_by === 'votes'){
-        articlesQuery += ` ORDER BY votes DESC`
-    }
-    if(sort_by === 'comment_count'){
-        articlesQuery += ` ORDER BY comment_count DESC`
-    }
-    
+    articlesQuery += ` ORDER BY ${sort_by} ${order}`
+
     
     return db.query(articlesQuery, queryValues)
-    .then(({ rows }) => rows);
+    .then(( { rows }) => rows.length === 0 ? Promise.reject({ status: 404, msg: 'topic not found' }) : rows);
 }
