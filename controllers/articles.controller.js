@@ -20,8 +20,8 @@ exports.patchVotes = (req, res, next) => {
 }
 
 exports.getSortedArticleList = (req, res, next) => {
-    const { article_id, author, topic, created_at, votes, comment_count } = req.params;
-    selectSortedArticles(article_id, author, topic, created_at, votes, comment_count)
+    const { sort_by } = req.query;
+    selectSortedArticles(sort_by)
     .then((articles) => {
         res.status(200).send({ articles })
     })
