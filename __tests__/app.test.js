@@ -198,7 +198,7 @@ describe('app', () => {
                 expect(body.msg).toBe('invalid request');
             })
         })
-        describe('GET api/articles/order', () => {
+        describe('GET api/articles/order_by', () => {
             it('status:200, accepts valid order by query', () => { //✅
                 return request(app)
                 .get('/api/articles?order=ASC')
@@ -207,7 +207,7 @@ describe('app', () => {
                     expect(body.articles).toBeSorted('created_at', { descending: false});
                 })
             })
-            it('status:400, when passed invalud order_by query', () => { //✅
+            it('status:400, when passed invalid order_by query', () => { //✅
                 return request(app)
                 .get('/api/articles?order=NotAnOrderBy')
                 .expect(400)
@@ -216,7 +216,26 @@ describe('app', () => {
                 })
             })
         })
-
+        describe('GET api/articles/topic_filter', () => {
+            it('status:200, accepts valid topic value and filters by said value', () => {
+                return request(app)
+                .get('/api/articles?filter=cats')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.articles.length).toBeGreaterThanOrEqual(1);
+                    expect.objectContaining({
+                        article_id:     expect.any(Number),
+                        author:         expect.any(String),
+                        title:          expect.any(String),
+                        body:           expect.any(String),
+                        topic:          'cat',
+                        created_at:     expect.any(String),
+                        votes:          expect.any(Number),
+                        comment_count:  expect.any(String)
+                    })
+                })
+            })
+        })
     })
 });
 

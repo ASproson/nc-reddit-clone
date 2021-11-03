@@ -42,7 +42,7 @@ exports.updateArticleVotesById = (id, inc_votes) => {
     .then(({ rows }) => rows[0])
 }
 
-exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC') => {
+exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC', filter) => {
 
     let articlesQuery = `
     SELECT 
@@ -50,13 +50,19 @@ exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC') => {
         COUNT(c.author) AS comment_count 
     FROM articles
     LEFT OUTER JOIN comments AS c 
-    ON articles.article_id = c.article_id 
-    GROUP BY articles.article_id`
+    ON articles.article_id = c.article_id`
 
     const queryValues = [];
 
     const validColumns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count'];
-    const validOrders = ['ASC', 'DESC']
+    const validOrders = ['ASC', 'DESC'];
+    const validTopics = ['cat', 'mitch', 'paper'];
+
+    if(filter === 'cats'){
+        articlesQuery += ` WHERE articles.topic LIKE 'cats'`
+    }
+
+    articlesQuery += ` GROUP BY articles.article_id`
 
     if(!validColumns.includes(sort_by) || !validOrders.includes(order)){
         return Promise.reject({ status: 400, msg: 'invalid request' })
@@ -86,6 +92,7 @@ exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC') => {
     if(sort_by === 'comment_count'){
         articlesQuery += ` ORDER BY comment_count DESC`
     }
+    
     
     return db.query(articlesQuery, queryValues)
     .then(({ rows }) => rows);
