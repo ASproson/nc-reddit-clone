@@ -43,9 +43,7 @@ exports.updateArticleVotesById = (id, inc_votes) => {
     .then(({ rows }) => rows[0])
 }
 
-exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC', filter) => {
-
-    console.log('FILTER', filter)
+exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC', topic) => {
 
     let articlesQuery = `
     SELECT 
@@ -60,12 +58,9 @@ exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC', filter) 
     const validColumns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count'];
     const validOrders = ['ASC', 'DESC'];
 
-    // if (filter){add as paramteized filed} else {
-    //     return Promise.reject({ status: 400, msg: 'invalid request' })
-    // }
-    if(filter){
+    if(topic){
         articlesQuery += ` WHERE articles.topic = $1`
-        queryValues.push(filter)
+        queryValues.push(topic)
     }
 
 

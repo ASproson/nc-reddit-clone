@@ -217,12 +217,12 @@ describe('app', () => {
             })
         })
         describe('GET api/articles/topic_filter', () => {
-            it('status:200, accepts valid topic value and filters by said value', () => {
+            it('status:200, accepts valid topic value and filters by said topic', () => {
                 return request(app)
                 .get('/api/articles?topic=cats')
                 .expect(200)
                 .then(({ body }) => {
-                    // expect(body.articles.length).toEqual(1);
+                    expect(body.articles.length).toEqual(1);
                     body.articles.forEach((article) => {
                         expect(article).toEqual(
                             expect.objectContaining({
@@ -242,7 +242,7 @@ describe('app', () => {
             })
             it('status:400, when passed invalid topic', () => {
                 return request(app)
-                .get('/api/articles?filter=invalidTopic')
+                .get('/api/articles?topic=invalidTopic')
                 .expect(404)
                 .then(({ body }) => {
                     expect(body.msg).toBe('topic not found');
