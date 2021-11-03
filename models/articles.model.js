@@ -42,7 +42,7 @@ exports.updateArticleVotesById = (id, inc_votes) => {
     .then(({ rows }) => rows[0])
 }
 
-exports.selectSortedArticles = (sort_by) => {
+exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC') => {
 
     let articlesQuery = `
     SELECT 
@@ -57,17 +57,33 @@ exports.selectSortedArticles = (sort_by) => {
 
     const validColumns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count'];
 
-    // validColumns.forEach(column => {
-    //     if(sort_by != column){
-    //         return Promise.reject({ status: 400, msg: 'invalid request' })
-    //     }
-    // })
 
-    if(!sort_by){
+    if(!sort_by && !order){
         articlesQuery += ` ORDER BY articles.created_at DESC`
+    }
+    if(!validColumns.includes(sort_by)){
+        return Promise.reject({ status: 400, msg: 'invalid request' })
+    }
+    if(sort_by === 'author'){
+        articlesQuery += ` ORDER BY author DESC`
+    }
+    if(sort_by === 'title'){
+        articlesQuery += ` ORDER BY title DESC`
+    }
+    if(sort_by === 'article_id'){
+        articlesQuery += ` ORDER BY article_id DESC`
+    }
+    if(sort_by === 'topic'){
+        articlesQuery += ` ORDER BY topic DESC`
+    }
+    if(sort_by === 'created_at'){
+        articlesQuery += ` ORDER BY created_at DESC`
     }
     if(sort_by === 'votes'){
         articlesQuery += ` ORDER BY votes DESC`
+    }
+    if(sort_by === 'comment_count'){
+        articlesQuery += ` ORDER BY comment_count DESC`
     }
 
     return db.query(articlesQuery, queryValues)
