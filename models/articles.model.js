@@ -1,6 +1,6 @@
 const db = require('../db/connection.js');
 
-exports.selectArticles = (id) => {
+exports.selectArticle = (id) => {
 
     const articleLength = `SELECT * FROM articles`;
 

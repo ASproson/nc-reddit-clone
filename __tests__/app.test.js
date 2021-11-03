@@ -130,5 +130,19 @@ describe('app', () => {
             })
         })
     });
-    
+    describe('GET api/articles?sort_by', () => {
+        it('status:200, sorts articles by created_at by default', () => {
+            return request(app)
+            .get('/api/articles')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.articles).toBeSortedBy('created_at', {descending: false});
+            })
+        })
+        // it('status:200, sorts articles by valid column passed by user and returns articles', () => {
+
+        // })
+
+    })
 });
+
