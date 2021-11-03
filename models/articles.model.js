@@ -56,17 +56,17 @@ exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC') => {
     const queryValues = [];
 
     const validColumns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count'];
+    const validOrders = ['ASC', 'DESC']
 
-    console.log('ORDER:', order)
+    if(!validColumns.includes(sort_by) || !validOrders.includes(order)){
+        return Promise.reject({ status: 400, msg: 'invalid request' })
+    }
+
     if(order === 'ASC'){
         articlesQuery += ` ORDER BY created_at ASC`
     }
-
     if(!sort_by || !order){
         articlesQuery += ` ORDER BY articles.created_at DESC`
-    }
-    if(!validColumns.includes(sort_by)){
-        return Promise.reject({ status: 400, msg: 'invalid request' })
     }
     if(sort_by === 'author'){
         articlesQuery += ` ORDER BY author DESC`
@@ -86,9 +86,7 @@ exports.selectSortedArticles = (sort_by = 'created_at', order = 'DESC') => {
     if(sort_by === 'comment_count'){
         articlesQuery += ` ORDER BY comment_count DESC`
     }
-
-    console.log(articlesQuery)
-
+    
     return db.query(articlesQuery, queryValues)
     .then(({ rows }) => rows);
 }

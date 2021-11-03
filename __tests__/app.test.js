@@ -198,13 +198,21 @@ describe('app', () => {
                 expect(body.msg).toBe('invalid request');
             })
         })
-        describe.only('GET api/articles/order', () => {
+        describe('GET api/articles/order', () => {
             it('status:200, accepts valid order by query', () => { //✅
                 return request(app)
                 .get('/api/articles?order=ASC')
                 .expect(200)
                 .then(({ body }) => {
                     expect(body.articles).toBeSorted('created_at', { descending: false});
+                })
+            })
+            it('status:400, when passed invalud order_by query', () => { //✅
+                return request(app)
+                .get('/api/articles?order=NotAnOrderBy')
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('invalid request');
                 })
             })
         })
