@@ -79,16 +79,4 @@ exports.selectSortedArticles = async (sort_by = 'created_at', order = 'DESC', to
     
     return db.query(articlesQuery, queryValues)
     .then(( { rows }) => rows);
-    // .then(( { rows }) => {
-    //     const checkTopicExists = async (queryValues) => {
-    //         const dbCheck = await db.query(`SELECT * FROM articles WHERE topic = $1;`, [queryValues])
-    //         if(dbCheck.rows.length === 0){
-    //             console.log('CHECK TOPICS')
-    //             Promise.reject({ status: 404, msg: 'topic not found' });
-    //         }
-    //     };
-        //if topic query invoke: checkTopicExists()
-
-        return rows
-    // })
 }
