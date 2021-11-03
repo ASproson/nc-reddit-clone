@@ -41,3 +41,24 @@ exports.updateArticleVotesById = (id, inc_votes) => {
     return db.query(updateQuery, queryValues)
     .then(({ rows }) => rows[0])
 }
+
+exports.selectSortedArticles = (article_id, author, topic, created_at, votes, comment_count) => {
+    let articlesQuery = `
+    SELECT 
+        articles.*, 
+        COUNT(c.author) AS comment_count 
+    FROM articles
+    LEFT OUTER JOIN comments AS c 
+    ON articles.article_id = c.article_id 
+    GROUP BY articles.article_id`
+
+    const queryValues = [];
+
+    if(!article_id || !author || !topic || !created_at || !votes || !comment_count){
+        articlesQuery += ` ORDER BY $1 DESC`
+        queryValues.push(created_at);
+    }
+
+    return db.query(articlesQuery, queryValues)
+    .then(({ rows }) => rows);
+}

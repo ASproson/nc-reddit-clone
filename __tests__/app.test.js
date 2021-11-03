@@ -131,17 +131,33 @@ describe('app', () => {
         })
     });
     describe('GET api/articles?sort_by', () => {
-        it('status:200, sorts articles by created_at by default', () => {
+        it('status:200, sorts articles by created_at by default, newest articles first', () => {
             return request(app)
             .get('/api/articles')
             .expect(200)
             .then(({ body }) => {
-                expect(body.articles).toBeSortedBy('created_at', {descending: false});
+                expect(body.articles).toBeSorted('created_at', { descending: true });
+                expect(body.articles.length).toBeGreaterThanOrEqual(1);
+                expect.objectContaining({
+                    article_id:     expect.any(Number),
+                    author:         expect.any(String),
+                    title:          expect.any(String),
+                    body:           expect.any(String),
+                    topic:          expect.any(String),
+                    created_at:     expect.any(String),
+                    votes:          expect.any(Number),
+                    comment_count:  expect.any(String)
+                })
             })
         })
-        // it('status:200, sorts articles by valid column passed by user and returns articles', () => {
-
-        // })
+        it('status:200, sorts articles by valid column passed by user and returns articles', () => {
+            return request(app)
+            .get('/api/articles?sort_by=votes')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.articles).toBeSorted('votes', { descending: true });
+            })
+        })
 
     })
 });
