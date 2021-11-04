@@ -82,6 +82,12 @@ exports.selectSortedArticles = async (sort_by = 'created_at', order = 'DESC', to
 
 exports.selectArticleComments = (id) => {
 
+    const regex = /\d+/;
+    // let reg = /[0-9]/g;
+    let matched = id.match(regex);
+    console.log('MATCH', matched)
+
+
     const articleLength = `SELECT * FROM articles`;
 
     let articleQuery = `
@@ -97,7 +103,7 @@ exports.selectArticleComments = (id) => {
 
     let queryValues = [];
 
-    if(id > articleLength.length){
+    if(id > articleLength.length || matched === 'null'){
         return Promise.reject({ status: 404, msg: 'article not found' })
     }
 

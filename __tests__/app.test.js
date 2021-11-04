@@ -62,7 +62,7 @@ describe('app', () => {
             .then(({ body }) => {
                 expect(body.msg).toBe('invalid data type');
             })
-        });
+        })
         it('status:404, when passed an invalid article_id not in database', () => { //✅
             return request(app)
             .get('/api/articles/1000000000000')
@@ -280,6 +280,14 @@ describe('app', () => {
         it('status:404, when passed an invalid article_id not in database', () => { //✅
             return request(app)
             .get('/api/articles/1000000000000/comments')
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('article not found');
+            })
+        })
+        it('status:400, when passed an invalid article_id data type not within the database', () => { //✅
+            return request(app)
+            .get('/api/articles/NaN/comments')
             .expect(404)
             .then(({ body }) => {
                 expect(body.msg).toBe('article not found');
