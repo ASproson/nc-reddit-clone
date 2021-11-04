@@ -6,7 +6,9 @@
   "scripts": {
     "setup-dbs": "psql -U postgres -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
-    "test": "jest __tests__/app.test.js"
+    "test": "jest __tests__/app.test.js",
+    "seed:prod": "NODE_ENV=production DATABASE_URL=$(heroku config:get DATABASE_URL) npm run seed",
+    "start": "node listen.js"
   },
   "repository": {
     "type": "git",
