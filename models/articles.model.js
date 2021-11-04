@@ -1,5 +1,4 @@
 const db = require('../db/connection.js');
-const articles = require('../db/data/test-data/articles.js');
 
 exports.selectArticle = (id) => {
 
@@ -79,4 +78,30 @@ exports.selectSortedArticles = async (sort_by = 'created_at', order = 'DESC', to
     
     return db.query(articlesQuery, queryValues)
     .then(( { rows }) => rows);
+}
+
+exports.selectArticleComments = (id) => {
+
+    let articleQuery = `
+        SELECT 
+            comments.comment_id,
+            comments.votes,
+            comments.created_at,
+            comments.author,
+            comments.body
+        FROM comments
+        LEFT OUTER JOIN articles ON articles.article_id = comments.article_id
+        `;
+
+    let queryValues = [];
+
+    if(id){
+        articleQuery += ` WHERE articles.article_id = $1;`
+        queryValues.push(id);
+    }
+
+    
+
+    return db.query(articleQuery, queryValues)
+    .then(({ rows }) => rows)
 }

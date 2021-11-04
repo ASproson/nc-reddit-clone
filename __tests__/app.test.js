@@ -263,13 +263,17 @@ describe('app', () => {
             .get('/api/articles/1/comments')
             .expect(200)
             .then(({ body }) => {
-                expect(body.articles.length).toEqual();
-                expect.objectContaining({
-                    comment_id:     expect.any(Number),
-                    votes:          expect.any(Number),
-                    created_at:     expect.any(String),
-                    author:         expect.any(String),
-                    body:           expect.any(String)
+                expect(body.articles.length).toEqual(11);
+                body.articles.forEach((article) => {
+                    expect(article).toEqual(
+                        expect.objectContaining({
+                            comment_id:     expect.any(Number),
+                            votes:          expect.any(Number),
+                            created_at:     expect.any(String),
+                            author:         expect.any(String),
+                            body:           expect.any(String)
+                        })
+                    )
                 })
             })
         })
