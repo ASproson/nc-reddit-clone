@@ -258,7 +258,7 @@ describe('app', () => {
         })
     })
     describe('GET /api/articles/:article_id/comments', () => {
-        it('status:200, responds with an array of comments related to passed article_id', () => {
+        it('status:200, responds with an array of comments related to passed article_id', () => { //✅
             return request(app)
             .get('/api/articles/1/comments')
             .expect(200)
@@ -275,6 +275,14 @@ describe('app', () => {
                         })
                     )
                 })
+            })
+        })
+        it('status:404, when passed an invalid article_id not in database', () => { //✅
+            return request(app)
+            .get('/api/articles/1000000000000/comments')
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('article not found');
             })
         })
     })

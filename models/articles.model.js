@@ -82,6 +82,8 @@ exports.selectSortedArticles = async (sort_by = 'created_at', order = 'DESC', to
 
 exports.selectArticleComments = (id) => {
 
+    const articleLength = `SELECT * FROM articles`;
+
     let articleQuery = `
         SELECT 
             comments.comment_id,
@@ -95,12 +97,14 @@ exports.selectArticleComments = (id) => {
 
     let queryValues = [];
 
+    if(id > articleLength.length){
+        return Promise.reject({ status: 404, msg: 'article not found' })
+    }
+
     if(id){
         articleQuery += ` WHERE articles.article_id = $1;`
         queryValues.push(id);
     }
-
-    
 
     return db.query(articleQuery, queryValues)
     .then(({ rows }) => rows)
