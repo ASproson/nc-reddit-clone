@@ -128,7 +128,6 @@ exports.updateArticleWithComment = (id, body, username) => {
 
     let updateQuery = `INSERT INTO comments (body, author, article_id) VALUES ($1, $2, $3) RETURNING *;`;
     let queryValues = [body, username, id]
-    console.log(updateQuery)
 
     return db.query(updateQuery, queryValues)
     .then(({ rows }) => rows[0])

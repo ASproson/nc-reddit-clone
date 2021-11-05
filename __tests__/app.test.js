@@ -313,7 +313,7 @@ describe('app', () => {
                 expect(body.msg).toBe('article not found');
             })
         })
-        it('status:404, when passed an article_id not within the database', () => { //✅
+        it('status:404, when passed article_id not within the database', () => { //✅
             return request(app)
             .post('/api/articles/100000000000000/comments')
             .expect(404)
@@ -322,4 +322,15 @@ describe('app', () => {
             })
         })
     }) 
+    describe('DELETE /api/comments/:comment_id', () => {
+        it('status:204, when passed valid comment_id and returns no content', () => {
+            return request(app)
+            .delete('/api/comments/1')
+            .expect(204)
+            .then(({ body }) => {
+                expect(body).toEqual({});
+            })
+        })
+        it('status:404, when passed comment_id not within the database')
+    })
 });

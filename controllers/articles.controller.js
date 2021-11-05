@@ -42,7 +42,6 @@ exports.getPostedComment = (req, res, next) => {
     const { body, username } = req.body;
     updateArticleWithComment(id, body, username)
     .then((comment) => {
-        console.log(comment)
         res.status(200).send({ username: comment.author, body: comment.body })
     })
     .catch(next)
