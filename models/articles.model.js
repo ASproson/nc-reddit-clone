@@ -111,3 +111,25 @@ exports.selectArticleComments = (id) => {
     return db.query(articleQuery, queryValues)
     .then(({ rows }) => rows)
 }
+
+exports.updateArticleWithComment = (id, body, username) => {
+    const articleLength = `SELECT * FROM articles`;
+
+    if(id > articleLength.length){
+        return Promise.reject({ status: 404, msg: 'article not found' })
+    } 
+
+    let numsOnly = /\d+/.test(id)
+
+    if(numsOnly === false){
+        return Promise.reject({ status: 404, msg: 'article not found' })
+    }
+
+
+    let updateQuery = `INSERT INTO comments (body, author, article_id) VALUES ($1, $2, $3) RETURNING *;`;
+    let queryValues = [body, username, id]
+    console.log(updateQuery)
+
+    return db.query(updateQuery, queryValues)
+    .then(({ rows }) => rows[0])
+}

@@ -294,4 +294,32 @@ describe('app', () => {
             })
         })
     })
+    describe('POST /api/articles/:article_id/comments', () => {
+        it('status:200, when passed valid article_id and returns posted comment', () => {
+            const comment = { username: 'icellusedkars', body: 'My first comment!' }
+            return request(app)
+            .post('/api/articles/2/comments')
+            .send(comment)
+            .expect(200)
+            .then(({ body }) => {
+                expect(body).toEqual({ username: 'icellusedkars', body: 'My first comment!' });
+            })
+        })
+        it('status:404, when passed an invalid article_id data type not within the database', () => { //✅
+            return request(app)
+            .post('/api/articles/NaN/comments')
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('article not found');
+            })
+        })
+        it('status:404, when passed an article_id not within the database', () => { //✅
+            return request(app)
+            .post('/api/articles/100000000000000/comments')
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('article not found');
+            })
+        })
+    }) 
 });
