@@ -2,6 +2,8 @@
 
 This project is my interpretation of a Reddit-like backend service that provides an API to serve articles, comments, users, and topics; additionally users are able to update votes and add new comments to the database. If you would like to view the API currently hosted on Heroku, [please click here](https://nc-reddit-clone.herokuapp.com/api/) and you will be taken to a list of all the available endpoints in JSON format. If your browser does not support viewing JSON objects, please consider [this extension](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh).
 
+PostGreSQL version 14 and Node v.17 and greater is recommended to ensure the project runs as intended.
+
 ## Setup & Installation
 If you would like to run this project on your local machine please clone the repository below:
 
