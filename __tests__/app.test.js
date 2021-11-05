@@ -54,7 +54,6 @@ describe('app', () => {
                 )
             })
         })
-        // Could add additional test to verify comment_count, JSON.parse() to convert str to int
         it('status:400, when passed an invalid article_id data type not within the database', () => { //✅
             return request(app)
             .get('/api/articles/NaN')

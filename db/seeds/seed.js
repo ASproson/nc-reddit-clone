@@ -3,7 +3,6 @@ const format = require('pg-format');
 
 const seed = (data) => {
   const { articleData, commentData, topicData, userData } = data;
-  // 1. create tables
   return (db
     .query(`DROP TABLE IF EXISTS articles, comments, topics, users;`)
     .then(() => {
@@ -48,7 +47,6 @@ const seed = (data) => {
           body        VARCHAR(500) NOT NULL
       );`)
     })
-    // 2. insert data
     .then(() => {
       const sqlInsert = format(`INSERT INTO topics (slug, description) VALUES %L RETURNING *;`,
         topicData.map((topic) => { return [topic.slug, topic.description] }));
