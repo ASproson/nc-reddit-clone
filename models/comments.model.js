@@ -6,7 +6,9 @@ exports.deleteCommentByID = (id) => {
 
     const commentsLength = `SELECT * FROM comments`;
 
-    if(id > commentsLength.length){
+    let numsOnly = /\d+/.test(id)
+
+    if(id > commentsLength.length || numsOnly === false){
         return Promise.reject({ status: 404, msg: 'comment not found' })
     } 
 

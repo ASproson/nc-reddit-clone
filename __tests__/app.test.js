@@ -295,7 +295,7 @@ describe('app', () => {
         })
     })
     describe('POST /api/articles/:article_id/comments', () => {
-        it('status:200, when passed valid article_id and returns posted comment', () => {
+        it('status:200, when passed valid article_id and returns posted comment', () => { //✅
             const comment = { username: 'icellusedkars', body: 'My first comment!' }
             return request(app)
             .post('/api/articles/2/comments')
@@ -323,7 +323,7 @@ describe('app', () => {
         })
     }) 
     describe('DELETE /api/comments/:comment_id', () => {
-        it('status:204, when passed valid comment_id and returns no content', () => {
+        it('status:204, when passed valid comment_id and returns no content', () => { //✅
             return request(app)
             .delete('/api/comments/1')
             .expect(204)
@@ -331,6 +331,21 @@ describe('app', () => {
                 expect(body).toEqual({});
             })
         })
-        it('status:404, when passed comment_id not within the database')
+        it('status:404, when passed comment_id not within the database', () => { //✅
+            return request(app)
+            .delete('/api/comments/10000000000000')
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('comment not found');
+            })
+        })
+        it('status:404, when passed an invalid comment_id data type not within the database', () => { //✅
+            return request(app)
+            .delete('/api/comments/NaN')
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('comment not found');
+            })
+        })
     })
 });
