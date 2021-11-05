@@ -12,8 +12,6 @@ exports.deleteCommentByID = (id) => {
         return Promise.reject({ status: 404, msg: 'comment not found' })
     } 
 
-    console.log(deleteQuery)
-
     return db.query(deleteQuery, queryValues)
     .then(({ comment }) => comment)
 }
