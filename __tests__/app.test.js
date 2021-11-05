@@ -348,4 +348,12 @@ describe('app', () => {
             })
         })
     })
+    describe('GET /api', () => {
+        it('status:200, returns a list of all available endpoints on the API', () => {
+            return request(app)
+            .get('/api')
+            .expect(200)
+            // .then(({ body }))
+        })
+    })
 });

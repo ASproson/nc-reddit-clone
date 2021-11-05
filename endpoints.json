@@ -3,14 +3,14 @@
     "description": "serves up a json representation of all the available endpoints of the api"
   },
   "GET /api/topics": {
-    "description": "serves an array of all topics",
+    "description": "returns an array of all topics",
     "queries": [],
     "exampleResponse": {
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
   "GET /api/articles": {
-    "description": "serves an array of all topics",
+    "description": "returns an array of all articles",
     "queries": ["author", "topic", "sort_by", "order"],
     "exampleResponse": {
       "articles": [
@@ -23,5 +23,80 @@
         }
       ]
     }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "returns a single article matching the requested id",
+    "queries": [],
+    "exampleResponse": {
+      "article": [
+        {
+          "article_id": 3,
+          "title": "Eight pug gifs that remind me of mitch",
+          "topic": "mitch",
+          "author": "icellusedkars",
+          "body": "some gifs",
+          "created_at": 1527695953341,
+          "votes": 0,
+          "comment_count": 2
+        }
+      ]
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "updates the requested article's vote count based on the value included in the body. e.g. { inc_votes : 1 } would increment the current article's vote property by 1, { inc_votes : -100 } would decrement the current article's vote property by 100. It returns the updated article.",
+    "queries": [],
+    "requestBody": {"inc_votes": "newVote"},
+    "exampleResponse": {
+      "article": [
+        {
+          "article_id": 3,
+          "title": "Eight pug gifs that remind me of mitch",
+          "topic": "mitch",
+          "author": "icellusedkars",
+          "body": "some gifs",
+          "created_at": 1527695953341,
+          "votes": 1,
+          "comment_count": 2
+        }
+      ]
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "returns an array of comments for the requested article",
+    "queries": [],
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": "4",
+          "author": "mitch",
+          "body": "I'm a big fan",
+          "article_id": 1,
+          "created_at": 1527695953341,
+          "votes": 1
+        }
+      ]
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "adds a new comment to the requested article and serves the posted comment",
+    "queries": [],
+    "requestBody": {"username": "String", "body": "String"},
+    "exampleResponse": {
+      "comment": [
+        {
+          "comment_id": "5",
+          "author": "mitch",
+          "body": "I'm also a big fan",
+          "article_id": 1,
+          "created_at": 1527695953341,
+          "votes": 0
+        }
+      ]
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "Deletes the comment matching the ID requested.",
+    "queries": [],
+    "exampleResponse": {}
   }
 }
