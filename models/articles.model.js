@@ -73,7 +73,7 @@ exports.selectSortedArticles = async (sort_by = 'created_at', order = 'DESC', to
         return Promise.reject({ status: 400, msg: 'invalid request' })
     }
 
-    articlesQuery += ` ORDER BY ${sort_by} ${order}`
+    articlesQuery += ` ORDER BY ${sort_by} ${order.toUpperCase()}`
 
     
     return db.query(articlesQuery, queryValues)
