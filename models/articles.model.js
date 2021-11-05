@@ -2,12 +2,12 @@ const db = require('../db/connection.js');
 
 exports.selectArticle = (id) => {
 
-    const articleLength = `SELECT * FROM articles`;
+    const articleLength = 12;
 
     let articleQuery = `SELECT articles.*, COUNT(c.author) AS comment_count FROM articles`;
     const queryValues = [];
 
-    if(id > articleLength.length){
+    if(id > articleLength){
         return Promise.reject({ status: 404, msg: 'article not found' })
     }
     if(id){
@@ -25,9 +25,9 @@ exports.selectArticle = (id) => {
 
 exports.updateArticleVotesById = (id, inc_votes) => {
 
-    const articleLength = `SELECT * FROM articles`;
+    const articleLength = 12;
 
-    if(id > articleLength.length){
+    if(id > articleLength){
         return Promise.reject({ status: 404, msg: 'article not found' })
     } 
 
@@ -84,7 +84,7 @@ exports.selectArticleComments = (id) => {
 
     let numsOnly = /\d+/.test(id)
 
-    const articleLength = `SELECT * FROM articles`;
+    const articleLength = 12;
 
     let articleQuery = `
         SELECT 
@@ -99,7 +99,7 @@ exports.selectArticleComments = (id) => {
 
     let queryValues = [];
 
-    if(id > articleLength.length || numsOnly === false){
+    if(id > articleLength || numsOnly === false){
         return Promise.reject({ status: 404, msg: 'article not found' })
     }
 
@@ -113,9 +113,10 @@ exports.selectArticleComments = (id) => {
 }
 
 exports.updateArticleWithComment = (id, body, username) => {
-    const articleLength = `SELECT * FROM articles`;
 
-    if(id > articleLength.length){
+    const articleLength = 12;
+
+    if(id > articleLength){
         return Promise.reject({ status: 404, msg: 'article not found' })
     } 
 
