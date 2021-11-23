@@ -48,7 +48,7 @@ If you would like to use the API on your localhost enter the command:
 
 [GET /api/articles](https://nc-reddit-clone.herokuapp.com/api/articles?order=ASC) returns an array of articles ordered by date ascending
 
-[GET /api/articles](https://nc-reddit-clone.herokuapp.com/api/articles?topic=cats) returns an array of articles filtered by specified topic
+[GET /api/articles](https://nc-reddit-clone.herokuapp.com/api/articles?topic=coding) returns an array of articles filtered by specified topic
 
 [GET /api/articles/:article_id/comments](https://nc-reddit-clone.herokuapp.com/api/articles/1/comments) returns an array of comments for the specified article_id
 
