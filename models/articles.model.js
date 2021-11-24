@@ -2,7 +2,7 @@ const db = require('../db/connection.js');
 
 exports.selectArticle = (id) => {
 
-    const articleLength = 35;
+    const articleLength = 36;
 
     let articleQuery = `SELECT articles.*, COUNT(c.author) AS comment_count FROM articles`;
     const queryValues = [];
@@ -25,7 +25,7 @@ exports.selectArticle = (id) => {
 
 exports.updateArticleVotesById = (id, inc_votes) => {
 
-    const articleLength = 35;
+    const articleLength = 36;
 
     if(id > articleLength){
         return Promise.reject({ status: 404, msg: 'article not found' })
@@ -84,7 +84,7 @@ exports.selectArticleComments = (id) => {
 
     let numsOnly = /\d+/.test(id)
 
-    const articleLength = 35;
+    const articleLength = 36;
 
     let articleQuery = `
         SELECT 
@@ -114,7 +114,7 @@ exports.selectArticleComments = (id) => {
 
 exports.updateArticleWithComment = (id, body, username) => {
 
-    const articleLength = 35;
+    const articleLength = 36;
 
     if(id > articleLength){
         return Promise.reject({ status: 404, msg: 'article not found' })
