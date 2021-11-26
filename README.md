@@ -44,11 +44,11 @@ If you would like to use the API on your localhost enter the command:
 
 [PATCH /api/articles/:article_id](https://nc-reddit-clone.herokuapp.com/api/articles/1) updates spcecified article's votes when passed a JSON object like: {inc_votes : 20}
 
-[GET /api/articles](https://nc-reddit-clone.herokuapp.com/api/articles?sort_by=comment_count) returns an array of articles that can be sorted by any of the returned properties (defaults to date)
+[GET /api/articles?sort_by=comment_count](https://nc-reddit-clone.herokuapp.com/api/articles?sort_by=comment_count) returns an array of articles that can be sorted by any of the returned properties (defaults to date)
 
-[GET /api/articles](https://nc-reddit-clone.herokuapp.com/api/articles?order=ASC) returns an array of articles ordered by date ascending
+[GET /api/articles?order=ASC](https://nc-reddit-clone.herokuapp.com/api/articles?order=ASC) returns an array of articles ordered by date ascending default
 
-[GET /api/articles](https://nc-reddit-clone.herokuapp.com/api/articles?topic=coding) returns an array of articles filtered by specified topic
+[GET /api/articles?topic=coding](https://nc-reddit-clone.herokuapp.com/api/articles?topic=coding) returns an array of articles filtered by specified topic
 
 [GET /api/articles/:article_id/comments](https://nc-reddit-clone.herokuapp.com/api/articles/1/comments) returns an array of comments for the specified article_id
 
